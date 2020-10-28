@@ -1,0 +1,18 @@
+.menuToggle {
+  left: 40px;
+  top: 40px;
+  color: #fff;
+  position: fixed;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 100;
+  transition: color, left 0.22s ease-in;
+}
+.menuToggle:hover {
+  opacity: 0.7;
+}
+.menuToggle.open {
+  left: 320px;
+}
+
+/*# sourceMappingURL=MenuToggle.module.css.map */

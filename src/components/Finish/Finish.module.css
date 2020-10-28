@@ -1,0 +1,28 @@
+.finish {
+  border: 2px solid #fff;
+  border-radius: 5px;
+  width: 600px;
+  padding: 15px;
+  box-sizing: border-box;
+}
+.finish ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.finish li {
+  padding-top: 5px;
+}
+.finish li i {
+  padding-left: 10px;
+}
+
+.success {
+  color: rgba(37, 125, 37, 0.87);
+}
+
+.error {
+  color: rgba(180, 28, 28, 0.86);
+}
+
+/*# sourceMappingURL=Finish.module.css.map */

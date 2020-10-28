@@ -1,0 +1,31 @@
+.button {
+  padding: 15px;
+  border: 1px solid #ffffff;
+  border-radius: 4px;
+  margin-right: 15px;
+  color: #000;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+}
+.button:hover {
+  box-shadow: inset 2px 2px 1px rgba(0, 0, 0, 0.3);
+}
+.button:focus {
+  outline: none;
+}
+
+.main {
+  background: #2884f6;
+  color: #fff;
+}
+
+.success {
+  background: #257d25;
+}
+
+.error {
+  background: #b41c1c;
+}
+
+/*# sourceMappingURL=Button.module.css.map */

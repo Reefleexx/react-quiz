@@ -1,0 +1,22 @@
+.activeQuiz {
+  box-sizing: border-box;
+  width: 600px;
+  border: 2px solid #ffffff;
+  border-radius: 5px;
+  padding: 20px;
+}
+.activeQuiz ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.activeQuiz li {
+  padding-top: 10px;
+}
+
+.question {
+  display: flex;
+  justify-content: space-between;
+}
+
+/*# sourceMappingURL=ActiveQuiz.module.css.map */

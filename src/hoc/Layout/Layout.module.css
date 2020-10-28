@@ -1,0 +1,13 @@
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+.layout main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100vh;
+}
+
+/*# sourceMappingURL=Layout.module.css.map */

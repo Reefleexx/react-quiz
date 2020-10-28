@@ -1,0 +1,27 @@
+.input {
+  margin-bottom: 15px;
+  input {
+    display: block;
+    padding: 7px;
+    margin-top: 5px;
+    border: 1px solid #bebebe;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 300ms ease-in-out;
+  }
+  label {
+    display: block;
+    color: black;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  span {
+    color: #f01f30;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  &.invalid label{
+    color: #f01f30;
+  }
+}

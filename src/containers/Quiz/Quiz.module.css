@@ -1,0 +1,11 @@
+.quiz {
+  background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%);
+  padding-top: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  height: 100vh;
+}
+
+/*# sourceMappingURL=Quiz.module.css.map */

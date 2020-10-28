@@ -1,0 +1,27 @@
+.finish {
+  border: 2px solid #fff;
+  border-radius: 5px;
+  width: 600px;
+  padding: 15px;
+  box-sizing: border-box;
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    padding-top: 5px;
+    i {
+      padding-left: 10px;
+    }
+  }
+}
+
+.success {
+  color: rgba(17, 212, 17, 0.87);
+}
+
+.error {
+  color: rgba(231, 19, 19, 0.86);
+}

@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/react-quiz.iml" filepath="$PROJECT_DIR$/.idea/react-quiz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../webpack/.idea/webpack.iml" filepath="$PROJECT_DIR$/../webpack/.idea/webpack.iml" />
     </modules>
   </component>
 </project>

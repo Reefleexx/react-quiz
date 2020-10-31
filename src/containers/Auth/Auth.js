@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
 import classes from './Auth.module.scss'
-import Button from "../../components/UI/Button/Button";
-import Input from "../../components/UI/Input/Input";
+import Button from "../../components/UI/Button/Button"
+import Input from "../../components/UI/Input/Input"
 import is from 'is_js'
-
 
 class Auth extends Component {
 

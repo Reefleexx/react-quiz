@@ -4,6 +4,8 @@ import Button from "../../components/UI/Button/Button";
 import {createControl, isValid} from "../../form/formFramework"
 import Input from "../../components/UI/Input/Input";
 import Select from "../../components/UI/Select/Select";
+import {connect} from "react-redux";
+import {onAddQuiz, onSubmitQuiz, quizDelete} from "../../redux/actions/quizCreate";
 
 function createOptionControl(number) {
     return (
@@ -33,44 +35,45 @@ function createFormControl () {
 
 class QuizCreator extends Component {
 
+    componentWillUnmount() {
+        this.props.quizDelete()
+    }
+
     state = {
-        quiz: [],
         rightValue: 1,
         valid: false,
         formControls: createFormControl()
     }
 
-    onSubmitHandler = (event) => {
-        event.preventDefault();
-    }
-
-    onAddHandler = () => {
+    onAddHandler = (e) => {
+        e.preventDefault()
         const {question, option1, option2, option3, option4} = this.state.formControls
-        const index = this.state.quiz.length + 1
-        let quiz = this.state.quiz
+        const index = this.props.quiz.length + 1
 
         const quizItem = {
             id: index,
             rightAnswer: this.state.rightValue,
             question: question.value,
-            answer1: {text: option1.value, id: option1.id},
-            answer2: {text: option2.value, id: option2.id},
-            answer3: {text: option3.value, id: option3.id},
-            answer4: {text: option4.value, id: option4.id}
-        }
+            answers: [
+                {text: option1.value, id: option1.id},
+                {text: option2.value, id: option2.id},
+                {text: option3.value, id: option3.id},
+                {text: option4.value, id: option4.id}
 
-        quiz.push(quizItem)
+            ]
+            }
+
+        this.props.onAddQuiz(quizItem)
 
         this.setState({
-            quiz,
-            rightValue: 1,
-            valid: false,
-            formControls: createFormControl()
+            formControls: createFormControl(),
+            valid: false
         })
     }
 
-    onCreateHandler = () => {
-
+    onSubmitQuiz = (e) => {
+        e.preventDefault()
+        this.props.onSubmitQuiz()
     }
 
     onInputChange = (value, curInput) => {
@@ -138,7 +141,7 @@ class QuizCreator extends Component {
             <div className={classes.QuizCreator}>
                 <div className={classes.Wrapper}>
                     <h1>QuizCreator</h1>
-                    <form onSubmit={this.onSubmitHandler}>
+                    <form onSubmit={this.props.onSubmitQuiz}>
 
                         { this.renderInputs() }
 
@@ -152,8 +155,8 @@ class QuizCreator extends Component {
                         </Button>
                         <Button
                             type={'success'}
-                            onClick={this.onCreateHandler}
-                            disabled={this.state.quiz.length === 0}
+                            onClick={this.onSubmitQuiz}
+                            disabled={this.props.quiz.length === 0}
                         >
                             Confirm this quiz
                         </Button>
@@ -164,4 +167,18 @@ class QuizCreator extends Component {
     }
 }
 
-export default QuizCreator
+function mapStateToProps (state) {
+    return {
+        quiz: state.create.quizes
+    }
+}
+
+function mapDispatchToProps (dispatch) {
+    return {
+        onAddQuiz: (quiz) => dispatch(onAddQuiz(quiz)),
+        onSubmitQuiz: () => dispatch(onSubmitQuiz()),
+        quizDelete: () => dispatch(quizDelete())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuizCreator)

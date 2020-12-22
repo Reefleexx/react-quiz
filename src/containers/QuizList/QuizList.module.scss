@@ -1,5 +1,6 @@
 .QuizList {
   display: flex;
+  text-align: center  ;
   justify-content: center;
   align-content: center;
   height: 100vh;
@@ -29,4 +30,16 @@
     flex-direction: column;
   }
 
+}
+
+ul {
+  i {
+    font-size: 20px;
+    margin-left: 10px;
+    transition: color .3s;
+    cursor: pointer;
+    &:hover {
+      color: rgba(54, 61, 84, 0.87);
+    }
+  }
 }

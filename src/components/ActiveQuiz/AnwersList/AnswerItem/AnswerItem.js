@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./AnswerItem.module.scss"
 
 const AnswerItem = (props) => {
-    const cls = [classes.answerItem];
+    let cls = [classes.answerItem];
 
     if (props.answerState) {
         cls.push(classes[props.answerState[props.answer.id]])

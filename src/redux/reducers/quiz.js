@@ -32,20 +32,24 @@ export default function quizReducer (state = initialState, action) {
             }
         case ANSWER_STATE:
             return {
-                ...state, AnswerState: action.AnswerState
+                ...state,
+                AnswerState: action.answerState
             }
         case NEXT_QUESTION:
             return {
-                ...state, ActiveQuiz: state.ActiveQuiz + 1
+                ...state,
+                ActiveQuiz: state.ActiveQuiz + 1,
+                AnswerState: null
             }
         case FINISH_QUIZ:
             return {
-                ...state, isFinished: true
+                ...state,
+                isFinished: true
             }
         case ANSWER_RESULT:
             return {
                 ...state,
-                results: [...state.results, {[action.id]: action.boolean}]
+                results: {...state.results, [action.id]: action.b}
             }
         case RETRY_BUTTON:
             return {

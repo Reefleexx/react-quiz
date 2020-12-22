@@ -2,16 +2,11 @@ import React from "react";
 import classes from "./Drawer.module.scss"
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import {NavLink} from "react-router-dom";
-
-const links = [
-    {to: '/', name: 'List of test', exact: true},
-    {to: '/quiz-creator', name: 'Create a new test', exact: false},
-    {to: '/auth', name: 'Sign up', exact: false}
-]
+import {connect} from "react-redux";
 
 class Drawer extends React.Component {
 
-    renderMenu = () => {
+    renderMenu = (links) => {
         return (
             links.map((el, index) => {
                 return (
@@ -37,11 +32,22 @@ class Drawer extends React.Component {
             !this.props.open ? classes.close : ''
         ]
 
+        let links = [
+            {to: '/', name: 'List of test', exact: true}
+        ]
+
+        if (this.props.isAuth) {
+            links.push({to: '/quiz-creator', name: 'Create a new test', exact: false})
+            links.push({to: '/logOut', name: 'Log out', exact: false})
+        } else {
+            links.push({to: '/auth', name: 'Sign up', exact: false})
+        }
+
         return (
             <>
                 <nav className={cls.join(' ')}>
                     <ul>
-                        {this.renderMenu()}
+                        {this.renderMenu(links)}
                     </ul>
                 </nav>
                 { this.props.open ? <Backdrop OnClose={this.props.OnClose}/> : null}
@@ -50,4 +56,10 @@ class Drawer extends React.Component {
     }
 }
 
-export default Drawer;
+function mapStateToProps(state) {
+    return {
+        isAuth: !!state.auth.token
+    }
+}
+
+export default connect(mapStateToProps)(Drawer);

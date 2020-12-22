@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import classes from './QuizList.module.scss'
 import {NavLink} from "react-router-dom";
 import {connect} from "react-redux";
-import {fetchQuiz} from "../../redux/actions/quizList";
+import {fetchQuiz, fetchDeleteQuiz} from "../../redux/actions/quizList";
 import Loader from "../../components/UI/Loader/Loader";
 
 class QuizList extends Component {
@@ -11,13 +11,18 @@ class QuizList extends Component {
         this.props.fetchQuiz()
     }
 
+    deleteQuiz = (id) => {
+        this.props.deleteQuiz(id)
+    }
+
     QuizRender = () => {
         if (this.props.quizList.length > 0) {
             return (
                 this.props.quizList.map((quiz, index) => {
                     return (
                         <li key={index}>
-                            <NavLink to={'/quiz/' + quiz.path}>Test {quiz.id}</NavLink>
+                            <NavLink to={'/quiz/' + quiz.id}>{quiz.title}</NavLink>
+                            <i className={'fa fa-times'} onClick={() => this.props.fetchDeleteQuiz(quiz.id)}/>
                         </li>
                     )
                 })
@@ -57,7 +62,8 @@ function mapStateToProps (state) {
 
 function mapDispatchToProps (dispatch) {
     return {
-        fetchQuiz: () => dispatch(fetchQuiz())
+        fetchQuiz: () => dispatch(fetchQuiz()),
+        fetchDeleteQuiz: (id) => dispatch(fetchDeleteQuiz(id))
     }
 }
 

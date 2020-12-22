@@ -5,8 +5,6 @@ import {Link} from "react-router-dom";
 
 class Finish extends React.Component {
 
-
-
     render() {
         const results = this.props.results
         const successCount = Object.keys(this.props.results).reduce((total, el) => {

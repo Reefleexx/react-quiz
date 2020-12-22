@@ -3,6 +3,9 @@ import classes from './Auth.module.scss'
 import Button from "../../components/UI/Button/Button"
 import Input from "../../components/UI/Input/Input"
 import is from 'is_js'
+import {connect} from 'react-redux'
+import {fetchAuth} from "../../redux/actions/auth";
+
 
 class Auth extends Component {
 
@@ -36,12 +39,27 @@ class Auth extends Component {
         }
     }
 
-    loginHandler = () => {
+    loginHandler = (e) => {
+        e.preventDefault()
+        const forms = this.state.forms
+
+        this.props.fetchAuth({
+            email: forms.email.value,
+            password: forms.password.value,
+            returnSecureToken: true
+        }, true)
 
     }
 
-    regHandler = () => {
+    regHandler = (e) => {
+        e.preventDefault()
+        const forms = this.state.forms
 
+        this.props.fetchAuth({
+            email: forms.email.value,
+            password: forms.password.value,
+            returnSecureToken: true
+        }, false)
     }
 
     submitHandler = (e) => {
@@ -137,4 +155,10 @@ class Auth extends Component {
     }
 }
 
-export default Auth
+function mapDispatchToProps(dispatch) {
+    return {
+        fetchAuth: (authForm, type) => dispatch(fetchAuth(authForm, type))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Auth)

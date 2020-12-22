@@ -7,6 +7,7 @@ import Select from "../../components/UI/Select/Select";
 import {connect} from "react-redux";
 import {onAddQuiz, onSubmitQuiz, quizDelete} from "../../redux/actions/quizCreate";
 
+
 function createOptionControl(number) {
     return (
         createControl({
@@ -42,6 +43,11 @@ class QuizCreator extends Component {
     state = {
         rightValue: 1,
         valid: false,
+        title: createControl({
+                label: "Add the title of hole test",
+                errorMassage: "Question can't be empty"},
+            {required: true}
+        ),
         formControls: createFormControl()
     }
 
@@ -59,8 +65,7 @@ class QuizCreator extends Component {
                 {text: option2.value, id: option2.id},
                 {text: option3.value, id: option3.id},
                 {text: option4.value, id: option4.id}
-
-            ]
+                ]
             }
 
         this.props.onAddQuiz(quizItem)
@@ -73,7 +78,37 @@ class QuizCreator extends Component {
 
     onSubmitQuiz = (e) => {
         e.preventDefault()
-        this.props.onSubmitQuiz()
+        this.props.onSubmitQuiz(this.state.title.value)
+
+        this.setState({
+            title: createControl({
+                    label: "Add the title of hole test",
+                    errorMassage: "Question can't be empty"},
+                {required: true}
+            ),
+            formControls: createFormControl(),
+            valid: false
+        })
+    }
+
+    onSelectChange = (event) => {
+        this.setState({
+            rightValue: +event.target.value
+        })
+    }
+
+    allValidCheck = () => {
+        let forms = this.state.formControls
+
+        let allValid = true
+
+        for(let control in forms) {
+            allValid = forms[control].valid && allValid
+        }
+
+        this.setState({
+            valid: allValid
+        })
     }
 
     onInputChange = (value, curInput) => {
@@ -84,22 +119,49 @@ class QuizCreator extends Component {
         form.value = value
         form.valid = isValid(value, form.validation)
 
-        let allValid = true
-
-        for(let control in forms) {
-            allValid = forms[control].valid && allValid
-        }
-
         this.setState({
             formControls: forms,
-            valid: allValid
+        })
+
+        // this.setState({
+        //     formControls: {...this.state.formControls, [e.target.name]: e.target.value}
+        // })
+
+        this.allValidCheck()
+    }
+
+    onTitleChange = (value) => {
+        const title = {...this.state.title}
+
+        title.touched = true
+        title.value = value
+        title.valid = isValid(value, title.validation)
+
+        console.log('hi')
+
+        this.setState({
+            title: title
         })
     }
 
-    onSelectChange = (event) => {
-        this.setState({
-            rightValue: +event.target.value
-        })
+    renderTitle = () => {
+
+        const title = this.state.title
+
+        return (
+            <React.Fragment key={`title21312313`}>
+                <Input
+                    value={title.value}
+                    type={"text"}
+                    isTouched={title.touched}
+                    valid={title.valid}
+                    errorMessage={title.errorMessage}
+                    label={title.label}
+                    onChange={event => this.onTitleChange(event.target.value)}
+                />
+                <hr/>
+            </React.Fragment>
+        )
     }
 
     renderInputs = () => {
@@ -118,11 +180,18 @@ class QuizCreator extends Component {
                         label={curInput.label}
                         onChange={event => this.onInputChange(event.target.value, input)}
                     />
-                    { index === 0 ? <hr/> : null }
                 </React.Fragment>
             )
         })
     }
+
+    isDis = () => {
+        if (this.state.title.valid){
+            if (this.props.quiz.length > 0) return false
+        }
+        return true
+    }
+
 
     render() {
         const select = <Select
@@ -136,14 +205,15 @@ class QuizCreator extends Component {
                 {text: 4, value: 4}
             ]}
         />
-
         return(
             <div className={classes.QuizCreator}>
                 <div className={classes.Wrapper}>
                     <h1>QuizCreator</h1>
                     <form onSubmit={this.props.onSubmitQuiz}>
 
-                        { this.renderInputs() }
+                        {this.renderTitle()}
+
+                        { this.renderInputs()}
 
                         {select}
                         <Button
@@ -156,7 +226,7 @@ class QuizCreator extends Component {
                         <Button
                             type={'success'}
                             onClick={this.onSubmitQuiz}
-                            disabled={this.props.quiz.length === 0}
+                            disabled={this.isDis()}
                         >
                             Confirm this quiz
                         </Button>
@@ -176,7 +246,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
     return {
         onAddQuiz: (quiz) => dispatch(onAddQuiz(quiz)),
-        onSubmitQuiz: () => dispatch(onSubmitQuiz()),
+        onSubmitQuiz: (title) => dispatch(onSubmitQuiz(title)),
         quizDelete: () => dispatch(quizDelete())
     }
 }

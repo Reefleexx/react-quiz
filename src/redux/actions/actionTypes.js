@@ -13,3 +13,6 @@ export const FINISH_QUIZ = 'FINISH_QUIZ'
 export const ANSWER_RESULT = 'ANSWER_RESULT'
 export const RETRY_BUTTON = 'RETRY_BUTTON'
 export const QUIZ_UNMOUNT = 'QUIZ_UNMOUNT'
+
+export const AUTH_SUCCESS = 'AUTH_SUCCESS'
+export const AUTH_LOGOUT = 'AUTH_LOGOUT'

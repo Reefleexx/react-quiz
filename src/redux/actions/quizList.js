@@ -1,5 +1,5 @@
-import axios from "axios";
 import {FETCH_QUIZ_START, FETCH_QUIZ_SUCCESS} from "./actionTypes";
+import {database} from "../../firebaseConfig";
 
 function fetchQuizStart () {
     return {
@@ -14,26 +14,39 @@ function fetchQuizSuccess (quizList) {
     }
 }
 
+export function fetchDeleteQuiz(id) {
+    return async (dispatch) => {
+        try {
+            await  database.ref('quizes/' + id).remove()
+            dispatch(fetchQuiz())
+        } catch (e) {
+            console.log(e)
+        }
+    }
+}
+
 export function fetchQuiz () {
     return async (dispatch) => {
-        try{
+        try {
             dispatch(fetchQuizStart())
 
-            const response = await axios.get(`https://react-quiz-fb6f1.firebaseio.com/quizes.json`)
-            const data = response.data
+            let quizes
+
+            await database.ref('quizes/').once("value", (response) => {
+                quizes = response.val()
+            })
 
             let quizList = []
-            console.log(data)
-            if (data) {
-                Object.keys(data).forEach((quiz, index) => {
+
+            if (quizes) {
+                Object.keys(quizes).forEach((quiz, index) => {
                     quizList.push({
-                        path: quiz,
-                        id: index + 1
+                        id: quiz,
+                        title: quizes[quiz].title
                     })
                 })
             }
 
-            console.log(quizList)
             dispatch(fetchQuizSuccess(quizList))
 
         } catch (e) {

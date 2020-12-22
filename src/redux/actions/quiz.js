@@ -1,4 +1,4 @@
-import axios from 'axios'
+import {database} from "../../firebaseConfig";
 import {
     QUIZ_START,
     QUIZ_SUCCESS,
@@ -27,10 +27,10 @@ export function fetchQuiz (id) {
     return async (dispatch) => {
         try {
             dispatch(fetchQuizStart())
-            const response = await axios.get(`https://react-quiz-fb6f1.firebaseio.com/quizes/${id}.json`)
-            const data = response.data
+            let data
+            await database.ref('quizes/' + id).once('value', (snapshot) => data = snapshot.val())
 
-            dispatch(fetchQuizSuccess(data))
+            dispatch(fetchQuizSuccess(data.questions))
 
         } catch (e) {
             console.log(e)
@@ -57,10 +57,10 @@ function finishQuiz() {
     }
 }
 
-function answerResult(id, boolean) {
+function answerResult(id, b) {
     return {
         type: ANSWER_RESULT,
-        id, boolean
+        id, b
     }
 }
 
@@ -71,9 +71,11 @@ export function onAnswerClick(id) {
 
         if(quiz.quiz[activeQuiz].rightAnswer === id){
 
+            dispatch(answerState({[id]: "success"}))
+
+
             if (!quiz.results[activeQuiz]){
-                dispatch(answerState({[id]: "success"}))
-                dispatch(answerResult(id, true))
+                dispatch(answerResult(activeQuiz, "success"))
             }
 
             if(quiz.quiz.length >= activeQuiz + 2) {
@@ -84,7 +86,7 @@ export function onAnswerClick(id) {
 
         } else {
                 dispatch(answerState({[id]: "error"}))
-                dispatch(answerResult(id, false))
+                dispatch(answerResult(activeQuiz, "error"))
             }
         }
 }

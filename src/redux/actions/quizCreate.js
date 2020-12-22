@@ -1,5 +1,5 @@
 import {ADD_QUIZ_ITEM, QUIZ_DELETE} from './actionTypes'
-import axios from "axios";
+import {database} from "../../firebaseConfig";
 
 export function onAddQuiz (quiz) {
     return {
@@ -14,11 +14,16 @@ export function quizDelete () {
     }
 }
 
-export function onSubmitQuiz () {
+export function onSubmitQuiz (title) {
     return async (dispatch, getState) => {
         try {
-            const data = getState().create.quizes
-            await axios.post('https://react-quiz-fb6f1.firebaseio.com/quizes.json', data)
+            const data = {
+                title,
+                questions: getState().create.quizes
+            }
+            // await axios.post('https://react-quiz-fb6f1.firebaseio.com/quizes.json', data)
+            await database.ref('quizes/').push().set(data)
+
             dispatch(quizDelete())
         } catch (e) {
             console.log(e)

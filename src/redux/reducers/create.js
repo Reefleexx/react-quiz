@@ -1,4 +1,4 @@
-import {ADD_QUIZ_ITEM, QUIZ_DELETE} from "../actions/actionTypes";
+import {ADD_QUIZ_ITEM, QUIZ_DELETE} from "../types";
 
 const initialState = {
     quizes: []

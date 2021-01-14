@@ -1,11 +1,14 @@
 export const ADD_QUIZ_ITEM = 'ADD_QUIZ_ITEM'
 export const QUIZ_DELETE = 'QUIZ_DELETE'
+export const FETCH_CREATE = 'FETCH_CREATE'
 
 export const FETCH_QUIZ_START = 'FETCH_QUIZ_START'
 export const FETCH_QUIZ_SUCCESS = 'FETCH_QUIZ_SUCCESS'
+export const FETCH_QUIZ_DELETE = 'FETCH_QUIZ_DELETE'
 
 export const QUIZ_START = 'QUIZ_START'
 export const QUIZ_SUCCESS = 'QUIZ_SUCCESS'
+export const FETCH_QUIZ_LIST = 'FETCH_QUIZ_LIST'
 
 export const ANSWER_STATE = 'ANSWER_STATE'
 export const NEXT_QUESTION = 'NEXT_QUESTION'
@@ -13,6 +16,11 @@ export const FINISH_QUIZ = 'FINISH_QUIZ'
 export const ANSWER_RESULT = 'ANSWER_RESULT'
 export const RETRY_BUTTON = 'RETRY_BUTTON'
 export const QUIZ_UNMOUNT = 'QUIZ_UNMOUNT'
+export const FETCH_QUIZ = 'FETCH_QUIZ'
 
 export const AUTH_SUCCESS = 'AUTH_SUCCESS'
 export const AUTH_LOGOUT = 'AUTH_LOGOUT'
+export const FETCH_AUTH = 'FETCH_AUTH'
+
+export const SHOW_ALERT = 'SHOW_ALERT'
+export const HIDE_ALERT = 'HIDE_ALERT'

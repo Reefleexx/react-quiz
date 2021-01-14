@@ -6,7 +6,7 @@ import {
     QUIZ_START,
     QUIZ_SUCCESS, QUIZ_UNMOUNT,
     RETRY_BUTTON
-} from "../actions/actionTypes";
+} from "../types";
 
 const initialState = {
     loading: true,

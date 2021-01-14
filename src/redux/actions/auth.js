@@ -1,36 +1,54 @@
-import axios from 'axios'
 import 'firebase/auth';
-import {AUTH_LOGOUT, AUTH_SUCCESS} from "./actionTypes";
+import {AUTH_LOGOUT, AUTH_SUCCESS, FETCH_AUTH} from "../types";
 
-export function authSuccess (token, expiresTime, localId) {
+export function authSuccess (token, expiresIn, localId) {
+
+    localStorage.setItem('token', token)
+    localStorage.setItem('expiresIn', expiresIn)
+    localStorage.setItem('localId', localId)
+
     return {
         type: AUTH_SUCCESS,
-        token, expiresTime, localId
+        token, expiresIn, localId
     }
 }
 
-export function fetchAuth (authForm, type) {
-    return async (dispatch) => {
-        try {
-            const url = type ? 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAaI1ywCBFic4yebvBBcQ0JltZJyVPkbms  ':
-                'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAaI1ywCBFic4yebvBBcQ0JltZJyVPkbms'
+export function fetchAuth (authForm, authType) {
+    return {
+        type: FETCH_AUTH,
+        authForm, authType
+    }
+}
 
-            const response = await axios.post(url, authForm)
-            const data = response.data
+export function checkStorage () {
+    return (dispatch) => {
+        const token = localStorage.getItem('token')
+        const time = localStorage.getItem('expiresIn')
+        const id = localStorage.getItem('localId')
 
-            dispatch(authSuccess(data.idToken, data.expiresIn, data.localId))
-
-            localStorage.setItem('token', data.idToken)
-            localStorage.setItem('expiresTime', data.expiresIn)
-            localStorage.setItem('localId', data.localId)
-
-        } catch (e) {
-            console.log(e)
+        if (token) {
+            if (time >= new Date().getTime()) {
+                dispatch(authSuccess(token, time, id))
+            } else {
+               dispatch(logOut())
+            }
         }
     }
 }
 
+export function autoLogOut (time) {
+    return async (dispatch) => {
+        setTimeout(() => {
+            dispatch(logOut())
+        }, time)
+    }
+}
+
 export function logOut () {
+    localStorage.removeItem('localId')
+    localStorage.removeItem('expiresTime')
+    localStorage.removeItem('token')
+
     return {
         type: AUTH_LOGOUT
     }

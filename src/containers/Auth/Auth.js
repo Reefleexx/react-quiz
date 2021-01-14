@@ -5,12 +5,13 @@ import Input from "../../components/UI/Input/Input"
 import is from 'is_js'
 import {connect} from 'react-redux'
 import {fetchAuth} from "../../redux/actions/auth";
-
+import Error from "../../components/UI/Error/Error";
 
 class Auth extends Component {
 
     state = {
         isFormValid: false,
+        disabled: true,
         forms: {
             email: {
                 type: 'email',
@@ -19,6 +20,7 @@ class Auth extends Component {
                 value: '',
                 touched: false,
                 errorMessage: 'Invalid email address',
+                isMessage: false,
                 validation: {
                     email: true,
                     required: true
@@ -31,6 +33,7 @@ class Auth extends Component {
                 value: '',
                 touched: false,
                 errorMessage: 'Password is incorrect',
+                isMessage: false,
                 validation: {
                     minLength: 6,
                     required: true
@@ -39,31 +42,56 @@ class Auth extends Component {
         }
     }
 
-    loginHandler = (e) => {
-        e.preventDefault()
-        const forms = this.state.forms
+    checkValid = () => {
+        const forms = {...this.state.forms}
 
-        this.props.fetchAuth({
-            email: forms.email.value,
-            password: forms.password.value,
-            returnSecureToken: true
-        }, true)
+        let isFormValid = true
+        Object.keys(forms).forEach(formName => {
+            const form = forms[formName]
 
+            const isValid = this.isValid(form.value, form.validation)
+            form.valid = isValid
+
+            form.isMessage = !isValid && form.value.length >= 1
+
+            isFormValid = isFormValid && form.valid
+        })
+
+        this.setState({
+            forms: forms,
+            isFormValid
+        })
+        return isFormValid
     }
 
     regHandler = (e) => {
         e.preventDefault()
         const forms = this.state.forms
 
-        this.props.fetchAuth({
-            email: forms.email.value,
-            password: forms.password.value,
-            returnSecureToken: true
-        }, false)
+        const isFormValid = this.checkValid()
+
+        if (isFormValid) {
+            this.props.fetchAuth({
+                email: forms.email.value,
+                password: forms.password.value,
+                returnSecureToken: true
+            }, false)
+        }
     }
 
     submitHandler = (e) => {
         e.preventDefault()
+        const forms = this.state.forms
+
+        const isFormValid = this.checkValid()
+
+        if (isFormValid) {
+            this.props.fetchAuth({
+                email: forms.email.value,
+                password: forms.password.value,
+                returnSecureToken: true
+            }, true)
+        }
     }
 
     isValid = (value, validations) => {
@@ -91,22 +119,21 @@ class Auth extends Component {
 
         form.value = event.target.value
         form.touched = true
-        form.valid = this.isValid(form.value, form.validation)
 
-        let isFormValid = true
+        const disabled = false
 
-        Object.keys(forms).forEach((form) => {
-            isFormValid = forms[form].valid && isFormValid
-        })
+        if (form.value.trim() === ''){
+            form.isMessage = false
+        }
 
         forms[curForm] = form
         this.setState({
-            forms, isFormValid
+            forms, disabled
         })
     }
 
     renderInputs = () => {
-       return (
+        return (
            Object.keys(this.state.forms).map((curForm, index) => {
                const form = this.state.forms[curForm]
                return (
@@ -117,6 +144,7 @@ class Auth extends Component {
                        value={form.value}
                        isTouched={form.touched}
                        valid={form.valid}
+                       isMessage={form.isMessage}
                        errorMessage={form.errorMessage}
                        onChange={event => this.onChangeHandler(event, curForm)}
                    />
@@ -128,6 +156,10 @@ class Auth extends Component {
     render() {
         return(
             <div className={classes.Auth}>
+
+                {this.props.error && <Error error={this.props.error}/>}
+                {/*<Error error={this.props.error}/>*/}
+
                 <h1>Authentication</h1>
 
                 <form onSubmit={this.submitHandler}>
@@ -136,8 +168,9 @@ class Auth extends Component {
 
                     <Button
                         type={'success'}
-                        onClick={this.loginHandler}
-                        disabled={!this.state.isFormValid}
+                        isSubmit={true}
+                        onClick={this.submitHandler}
+                        disabled={this.state.disabled}
                     >
                         Sign In
                     </Button>
@@ -145,7 +178,7 @@ class Auth extends Component {
                     <Button
                         type={'main'}
                         onClick={this.regHandler}
-                        disabled={!this.state.isFormValid}
+                        disabled={this.state.disabled}
                     >
                         Sign Up
                     </Button>
@@ -161,4 +194,10 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Auth)
+function mapStateToProps(state) {
+    return {
+        error: state.app.error
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)

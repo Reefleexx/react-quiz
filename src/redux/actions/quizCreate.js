@@ -1,5 +1,4 @@
-import {ADD_QUIZ_ITEM, QUIZ_DELETE} from './actionTypes'
-import {database} from "../../firebaseConfig";
+import {ADD_QUIZ_ITEM, FETCH_CREATE, QUIZ_DELETE} from '../types'
 
 export function onAddQuiz (quiz) {
     return {
@@ -14,19 +13,25 @@ export function quizDelete () {
     }
 }
 
-export function onSubmitQuiz (title) {
-    return async (dispatch, getState) => {
-        try {
-            const data = {
-                title,
-                questions: getState().create.quizes
-            }
-            // await axios.post('https://react-quiz-fb6f1.firebaseio.com/quizes.json', data)
-            await database.ref('quizes/').push().set(data)
+export function onSubmitQuiz (title, quizes) {
 
-            dispatch(quizDelete())
-        } catch (e) {
-            console.log(e)
+    return {
+        type: FETCH_CREATE,
+        quiz: {
+            title, questions: quizes
         }
     }
+    // return async (dispatch, getState) => {
+    //     try {
+    //         const data = {
+    //             title,
+    //             questions: getState().create.quizes
+    //         }
+    //         await database.ref('quizes/').push().set(data)
+    //
+    //         dispatch(quizDelete())
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 }

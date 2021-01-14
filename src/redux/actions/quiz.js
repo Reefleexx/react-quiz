@@ -1,4 +1,3 @@
-import {database} from "../../firebaseConfig";
 import {
     QUIZ_START,
     QUIZ_SUCCESS,
@@ -7,8 +6,8 @@ import {
     FINISH_QUIZ,
     ANSWER_RESULT,
     RETRY_BUTTON,
-    QUIZ_UNMOUNT
-} from "./actionTypes";
+    QUIZ_UNMOUNT, FETCH_QUIZ
+} from "../types";
 
 export function fetchQuizSuccess (quiz) {
     return {
@@ -24,18 +23,22 @@ export function fetchQuizStart () {
 }
 
 export function fetchQuiz (id) {
-    return async (dispatch) => {
-        try {
-            dispatch(fetchQuizStart())
-            let data
-            await database.ref('quizes/' + id).once('value', (snapshot) => data = snapshot.val())
-
-            dispatch(fetchQuizSuccess(data.questions))
-
-        } catch (e) {
-            console.log(e)
-        }
+    return {
+        type: FETCH_QUIZ,
+        id
     }
+    // return async (dispatch) => {
+    //     try {
+    //         dispatch(fetchQuizStart())
+    //         let data
+    //         await database.ref('quizes/' + id).once('value', (snapshot) => data = snapshot.val())
+    //
+    //         dispatch(fetchQuizSuccess(data.questions))
+    //
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
 }
 
 function answerState (answerState) {

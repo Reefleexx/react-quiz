@@ -25,3 +25,24 @@
     color: #f01f30;
   }
 }
+
+.inputForm {
+  display: flex;
+  position: relative;
+  a {
+    display: flex;
+    width: 100%;
+    max-width: 30px;
+    justify-content: center;
+    align-items: center;
+    color: #4c4c4c;
+    position: absolute;
+    right: 10px;
+    top: 54%;
+    transform: translateY(-50%);
+    &:hover {
+      text-decoration: none;
+      opacity: 0.7;
+    }
+  }
+}

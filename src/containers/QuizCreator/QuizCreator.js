@@ -7,33 +7,6 @@ import Select from "../../components/UI/Select/Select";
 import {connect} from "react-redux";
 import {onAddQuiz, onSubmitQuiz, quizDelete} from "../../redux/actions/quizCreate";
 
-
-function createOptionControl(number) {
-    return (
-        createControl({
-            label: `Option ${number}`,
-            errorMessage: "Option can't be empty",
-            id: number
-        }, {required: true})
-    )
-}
-
-function createFormControl () {
-    return (
-        {
-            question: createControl({
-                    label: "Add the question",
-                    errorMassage: "Question can't be empty"},
-                {required: true}
-            ),
-            option1: createOptionControl(1),
-            option2: createOptionControl(2),
-            option3: createOptionControl(3),
-            option4: createOptionControl(4)
-        }
-    )
-}
-
 class QuizCreator extends Component {
 
     componentWillUnmount() {
@@ -65,8 +38,8 @@ class QuizCreator extends Component {
                 {text: option2.value, id: option2.id},
                 {text: option3.value, id: option3.id},
                 {text: option4.value, id: option4.id}
-                ]
-            }
+            ]
+        }
 
         this.props.onAddQuiz(quizItem)
 
@@ -78,7 +51,7 @@ class QuizCreator extends Component {
 
     onSubmitQuiz = (e) => {
         e.preventDefault()
-        this.props.onSubmitQuiz(this.state.title.value)
+        this.props.onSubmitQuiz(this.state.title.value, this.props.quiz)
 
         this.setState({
             title: createControl({
@@ -136,8 +109,6 @@ class QuizCreator extends Component {
         title.touched = true
         title.value = value
         title.valid = isValid(value, title.validation)
-
-        console.log('hi')
 
         this.setState({
             title: title
@@ -237,6 +208,33 @@ class QuizCreator extends Component {
     }
 }
 
+
+function createOptionControl(number) {
+    return (
+        createControl({
+            label: `Option ${number}`,
+            errorMessage: "Option can't be empty",
+            id: number
+        }, {required: true})
+    )
+}
+
+function createFormControl () {
+    return (
+        {
+            question: createControl({
+                    label: "Add the question",
+                    errorMassage: "Question can't be empty"},
+                {required: true}
+            ),
+            option1: createOptionControl(1),
+            option2: createOptionControl(2),
+            option3: createOptionControl(3),
+            option4: createOptionControl(4)
+        }
+    )
+}
+
 function mapStateToProps (state) {
     return {
         quiz: state.create.quizes
@@ -246,7 +244,7 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
     return {
         onAddQuiz: (quiz) => dispatch(onAddQuiz(quiz)),
-        onSubmitQuiz: (title) => dispatch(onSubmitQuiz(title)),
+        onSubmitQuiz: (title, quiz) => dispatch(onSubmitQuiz(title, quiz)),
         quizDelete: () => dispatch(quizDelete())
     }
 }

@@ -7,6 +7,10 @@ const Button = (props) => {
         classes[props.type]
     ]
 
+    if (props.isSubmit) {
+        cls.push('submit')
+    }
+
     return(
         <button className={cls.join(' ')} onClick={props.onClick}
             disabled={props.disabled}

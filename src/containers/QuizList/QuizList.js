@@ -22,7 +22,12 @@ class QuizList extends Component {
                     return (
                         <li key={index}>
                             <NavLink to={'/quiz/' + quiz.id}>{quiz.title}</NavLink>
-                            <i className={'fa fa-times'} onClick={() => this.props.fetchDeleteQuiz(quiz.id)}/>
+                            {
+                                this.props.isAuth && <i
+                                    className={'fa fa-times'}
+                                    onClick={() => this.props.fetchDeleteQuiz(quiz.id)}
+                                />
+                            }
                         </li>
                     )
                 })
@@ -56,7 +61,8 @@ class QuizList extends Component {
 function mapStateToProps (state) {
     return {
         quizList: state.quizList.quizes,
-        loading: state.quizList.loading
+        loading: state.quizList.loading,
+        isAuth: state.auth.token
     }
 }
 

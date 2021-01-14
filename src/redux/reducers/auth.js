@@ -1,9 +1,10 @@
-import {AUTH_LOGOUT, AUTH_SUCCESS} from "../actions/actionTypes";
+import {AUTH_LOGOUT, AUTH_SUCCESS} from "../types";
 
 const initialState = {
     token: null,
-    expiresTime: 0,
+    expiresIn: 0,
     localId: null,
+    error: null
 }
 
 export default function authReducer (state = initialState, action) {
@@ -12,7 +13,7 @@ export default function authReducer (state = initialState, action) {
             return {
                 ...state,
                 token: action.token,
-                expiresTime: action.expiresTime,
+                expiresIn: action.expiresIn,
                 localId: action.localId
             }
         case AUTH_LOGOUT:

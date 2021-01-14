@@ -7,10 +7,15 @@ import Auth from "./containers/Auth/Auth";
 import QuizCreator from "./containers/QuizCreator/QuizCreator";
 import LogOut from './components/LogOut/LogOut'
 import {connect} from "react-redux";
+import {checkStorage} from "./redux/actions/auth";
 
 class App extends React.Component{
-    render() {
 
+    componentWillMount() {
+        this.props.checkStorage()
+    }
+
+    render() {
         let routs
         if (this.props.isAuth) {
             routs = <Switch>
@@ -44,4 +49,10 @@ function mapStateToProps (state) {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(App));
+function mapDispatchToProps (dispatch) {
+    return {
+        checkStorage: () => dispatch(checkStorage())
+    }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

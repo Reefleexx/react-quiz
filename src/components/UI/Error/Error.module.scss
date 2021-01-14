@@ -1,0 +1,48 @@
+.error{
+  position: absolute;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 400px;
+  //transition: opacity 200ms;
+  span {
+  }
+  i {
+    position: absolute;
+    margin-top: 3px;
+    font-size: 20px;
+    right: 22px;
+    cursor: pointer;
+  }
+}
+//
+//@keyframes times {
+//  0% {
+//    opacity: 0;
+//  }
+//  100%{
+//    opacity: 1;
+//  }
+//}
+//.exiting {
+//  animation: times 100ms alternate-reverse;
+//}
+//
+//.exited {
+//
+//}
+//
+//.entered{
+//
+//}
+//
+//.enter{
+//
+//}
+//
+//.exit{
+//
+//}
+//
+//.entering {
+//  animation: times 100ms alternate;
+//}

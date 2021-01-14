@@ -11,7 +11,6 @@ class Drawer extends React.Component {
             links.map((el, index) => {
                 return (
                     <li key={index}>
-                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                         <NavLink
                             to={el.to}
                             exact={el.exact}
